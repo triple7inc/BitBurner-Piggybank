@@ -3,11 +3,11 @@ Hack money from all available servers by using the target's system, running the 
 
 ## Contents
 - x.script `4.55 GB`
- - The Piggybank
+  - The Piggybank
 - botnet.script `3.05 GB`
- - Connect to target from by selection
+  - Connect to target from by selection
 - injector.script `7.60 GB`
- - Connect to manual target
+  - Connect to manual target
 
 ## Requirements
 - Target RAM: `4.55 GB`
