@@ -8,6 +8,8 @@ Hack money from all available servers by using the target's system, running the 
   - Connect to target from by selection
 - injector.script `7.60 GB`
   - Connect to manual target
+- purge.script `3.20 GB`
+  - Kills and purges the script at all targets
 
 ## Requirements
 - Target RAM: `4.55 GB`
