@@ -1,0 +1,39 @@
+function round(num){return(Math.round(num*100)/100)}
+function infiltrate(srv)
+{
+	var server=getServer(srv);
+	if(!server.ftpPortOpen&&fileExists("FTPCrack.exe",host))ftpcrack(srv);
+	if(!server.httpPortOpen&&fileExists("HTTPWorm.exe",host))httpworm(srv);
+	if(!server.smtpPortOpen&&fileExists("relaySMTP.exe",host))relaysmtp(srv);
+	if(!server.sqlPortOpen&&fileExists("SQLInject.exe",host))sqlinject(srv);
+	if(!server.sshPortOpen&&fileExists("BruteSSH.exe",host))brutessh(srv);
+	if(!server.hasAdminRights)nuke(srv);
+}
+var host=getHostname();
+if(args.length){
+	var srv=args[0];
+	var script=args.length==2?args[1]:"x";
+	script=script+".script";
+	print("Infiltrating...");
+	infiltrate(srv);
+	print("Killing...");
+	kill(script,srv);
+	print("Copying...");
+	scp(script,host,srv);
+	print("Calculating...");
+	var ram=getScriptRam(script,srv);
+	var max=getServerMaxRam(srv);
+	var times=Math.floor(max/ram);
+	if(times){
+		print("Executing...");
+		exec(script,srv,times);
+		print("RAM usage: "+ram+" GB");
+		print("Server RAM: "+max+" GB");
+		print("Running ("+times+") "+script+" at "+srv);
+	}else{
+		print("Missing "+round(ram-max)+" GB of RAM!");
+		print("Deleted "+script+" at "+srv);
+		rm(script,srv)
+	}
+	print(" ")
+}

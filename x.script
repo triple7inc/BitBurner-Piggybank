@@ -1,0 +1,64 @@
+var player=getPlayer();
+var App={
+	engine:{
+		format:function(num){return(nFormat(num,"0,0"))},
+		weaken:function(){
+			if(typeof(server)==="undefined")return!0;
+			var max=(server.minDifficulty+6);
+			if(server.hackDifficulty<max)return!1;
+			var srv=server.hostname;
+			print("Weakening '"+srv+"'... ("+App.engine.format(server.hackDifficulty)+"/"+App.engine.format(server.minDifficulty+5)+")");
+			var w=weaken(srv);
+			server.hackDifficulty-=w;
+			sleep(500);
+			return!0
+		},
+		grow:function(){
+			if(typeof(server)==="undefined")return!0;
+			var max=server.moneyMax*0.75;
+			if(server.moneyAvailable>=max)return!1;
+			var srv=server.hostname;
+			print("Growing '"+srv+"'... ($"+App.engine.format(server.moneyAvailable)+"/$"+App.engine.format(max)+")");
+			var g=grow(srv);
+			server.moneyAvailable*=g;
+			sleep(500);
+			return!0
+		},
+		hack:function(){
+			if(typeof(server)==="undefined")return!0;
+			player=getPlayer();
+			var srv=server.hostname;
+			print("Hacking '"+srv+"'...");
+			if(server.requiredHackingSkill>player.hacking){
+				print("Hacking skill is too low for '"+srv+"'");
+				return
+			}
+			if(!server.hasAdminRights){
+				print("Cannot get Root privileges at '"+srv+"'");
+				return
+			}
+			if(server.moneyAvailable<(server.moneyMax*0.75)){
+				print("Server has not enough money to hack");
+				return
+			}
+			var h=hack(srv);
+			print("Stolen $"+App.engine.format(h));
+		}
+	},
+};
+var val=0;
+var _srv=getHostname();
+tail(getScriptName());
+if(_srv=="home"){print("NOT RUNNING ON HOME SERVER!")}
+else{
+	var server=getServer(_srv);
+	sleep(1000);
+	while(true){
+		val=App.engine.weaken();
+		while(val)App.engine.weaken();
+		val=App.engine.grow();
+		while(val)val=App.engine.grow();
+		App.engine.hack();
+		sleep(1000)
+	}
+}

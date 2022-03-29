@@ -1,0 +1,8 @@
+var targets=read("targets.txt").split("\r\n");
+for(var x in targets){
+	var t=targets[x];
+	if(t==="undefined")continue;
+	killall(t);
+	if(fileExists("x.script",t))rm("x.script",t);
+}
+tprint("Killed all at "+nFormat(targets.length,"0,0")+" target(s)")

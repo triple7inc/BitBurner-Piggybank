@@ -1,0 +1,30 @@
+var targets=["n00dles","foodnstuff","sigma-cosmetics","joesguns","hong-fang-tea","harakiri-sushi","iron-gym","nectar-net","zer0","silver-helix","phantasy","netlink","summit-uni","crush-fitness","neo-net","CSEC","max-hardware","omega-net","the-hub","computek","syscore","lexo-corp","snap-fitness","millenium-fitness","global-pharm","omnia","zeus-med","johnson-ortho","zb-institute","I.I.I.I","rho-construction","avmnite-02h","catalyst","alpha-ent","galactic-cyber","unitalife","univ-energy","nova-med","applied-energetics","fulcrumtech","omnitek","aevum-police","aerocorp","deltaone","defcomm","zb-def","microdyne","vitalife","icarus","infocomm","titan-labs","helios","solaris","taiyang-digital","run4theh111z","stormtech","4sigma","b-and-a","The-Cave","blade","megacorp","kuai-gong","nwo","powerhouse-fitness","fulcrumassets","clarkinc","ecorp","."];
+///var targets=read("targets.txt").split("\r\n");
+function init(srv,t)
+{
+	exec("injector.script","home",1,srv);
+	if(t)tail("injector.script","home",srv);
+	sleep(1000)
+}
+var L=[];
+var level=getHackingLevel();
+for(var x in targets){
+	var _=targets[x];
+	if(_=="n00dles")continue;
+	if(_=="undefined")continue;
+	if(getServerRequiredHackingLevel(_)>level)continue;
+	tprint("Importing server '"+_+"'");
+	L.push(_)
+}
+targets=L;
+var srv=prompt("Choose server to inject",{type:"select",choices:["[ALL]"].concat(targets)});
+if(srv==""){}else
+if(srv!="[ALL]"){init(srv,true)}
+else{
+	for(var x in targets){
+		srv=targets[x];
+		tprint("Botnet: "+srv);
+		if(srv=="undefined")continue;
+		init(srv,false);
+	}
+}
